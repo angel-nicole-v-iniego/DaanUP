@@ -28,7 +28,6 @@ def construct_regular_graph():
         ("Area 2", "JEEP-Sanggumay/Kalayaan", 77, OUTSIDE),
         ("JEEP-Sanggumay/Kalayaan", "JEEP-Yakal", 91, OUTSIDE),
         ("JEEP-Yakal", "Yakal RH", 49, OUTSIDE),
-        ("UC", "Walkway to the Sky", 0 * 60 + 56, OUTSIDE),
     ]
 
     # Add edges to the graph
