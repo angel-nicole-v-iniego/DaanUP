@@ -1,45 +1,37 @@
-from pygraph.classes.graph import graph
+import networkx as nx
 
 OUTSIDE = "outside"
 INSIDE = "inside"
 
-def addEdge(gr, v1, v2, minutes, seconds, label):
-    total_seconds = minutes * 60 + seconds
-    gr.add_edge((v1, v2), wt=total_seconds, label=f"{total_seconds}s, {label}")
+def construct_regular_graph():
+    G = nx.Graph()  # or nx.DiGraph() if paths are directional
 
-def constructRegularGraph():
-    gr = graph()
-
-    gr.add_nodes([
-        "UC", "Hunt", "Wean", "Doherty", "Gates", "Hamerschlag", "Porter", "Baker",
-        "Margaret Morrison\n(Tepper side)", "Margaret Morrison\n(UC side)",
-        "Tepper\n(Margaret Morrison side)", "Tepper\n(Hunt side)", "Walkway To the Sky"
-    ])
-
+    # Define edges with (from, to, time in sec, label)
     edges = [
-        ("UC", "Hunt", 3, 42, OUTSIDE),
-        ("Hunt", "Wean", 3, 43, OUTSIDE),
-        ("Wean", "Doherty", 2, 57, INSIDE),
-        ("UC", "Doherty", 2, 34, OUTSIDE),
-        ("UC", "Gates", 2, 47, OUTSIDE),
-        ("Gates", "Wean", 6, 3, INSIDE),
-        ("Wean", "Hamerschlag", 1, 10, OUTSIDE),
-        ("Hamerschlag", "Porter", 0, 50, OUTSIDE),
-        ("Porter", "Baker", 2, 35, INSIDE),
-        ("Baker", "Hunt", 0, 35, OUTSIDE),
-        ("Tepper\n(Margaret Morrison side)", "Hunt", 2, 48, OUTSIDE),
-        ("Tepper\n(Margaret Morrison side)", "UC", 3, 12, OUTSIDE),
-        ("Tepper\n(Margaret Morrison side)", "Margaret Morrison\n(Tepper side)", 0, 52, OUTSIDE),
-        ("Margaret Morrison\n(Tepper side)", "Margaret Morrison\n(UC side)", 1, 10, INSIDE),
-        ("Margaret Morrison\n(UC side)", "UC", 1, 40, OUTSIDE),
-        ("Tepper\n(Hunt side)", "Tepper\n(Margaret Morrison side)", 2, 1, INSIDE),
-        ("Tepper\n(Hunt side)", "Hunt", 1, 27, OUTSIDE),
-        ("Porter", "Wean", 0, 53, OUTSIDE),
-        ("Gates", "Walkway To the Sky", 1, 97, OUTSIDE),
-        ("UC", "Walkway To the Sky", 0, 56, OUTSIDE),
+        ("UC", "Hunt", 3 * 60 + 42, OUTSIDE),
+        ("Hunt", "Wean", 3 * 60 + 43, OUTSIDE),
+        ("Wean", "Doherty", 2 * 60 + 57, INSIDE),
+        ("UC", "Doherty", 2 * 60 + 34, OUTSIDE),
+        ("UC", "Gates", 2 * 60 + 47, OUTSIDE),
+        ("Gates", "Wean", 6 * 60 + 3, INSIDE),
+        ("Wean", "Hamerschlag", 1 * 60 + 10, OUTSIDE),
+        ("Hamerschlag", "Porter", 0 * 60 + 50, OUTSIDE),
+        ("Porter", "Baker", 2 * 60 + 35, INSIDE),
+        ("Baker", "Hunt", 0 * 60 + 35, OUTSIDE),
+        ("Tepper (MM side)", "Hunt", 2 * 60 + 48, OUTSIDE),
+        ("Tepper (MM side)", "UC", 3 * 60 + 12, OUTSIDE),
+        ("Tepper (MM side)", "Margaret Morrison (Tepper)", 0 * 60 + 52, OUTSIDE),
+        ("Margaret Morrison (Tepper)", "Margaret Morrison (UC)", 1 * 60 + 10, INSIDE),
+        ("Margaret Morrison (UC)", "UC", 1 * 60 + 40, OUTSIDE),
+        ("Tepper (Hunt)", "Tepper (MM side)", 2 * 60 + 1, INSIDE),
+        ("Tepper (Hunt)", "Hunt", 1 * 60 + 27, OUTSIDE),
+        ("Porter", "Wean", 0 * 60 + 53, OUTSIDE),
+        ("Gates", "Walkway to the Sky", 1 * 60 + 48, OUTSIDE),
+        ("UC", "Walkway to the Sky", 0 * 60 + 56, OUTSIDE),
     ]
 
-    for edge in edges:
-        addEdge(gr, *edge)
+    # Add edges to the graph
+    for u, v, time_sec, path_type in edges:
+        G.add_edge(u, v, weight=time_sec, label=path_type)
 
-    return gr
+    return G
